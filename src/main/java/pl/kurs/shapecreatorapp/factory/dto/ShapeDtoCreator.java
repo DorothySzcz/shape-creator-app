@@ -6,5 +6,5 @@ import pl.kurs.shapecreatorapp.model.dto.ShapeDto;
 public interface ShapeDtoCreator {
     String getType();
 
-    ShapeDto find(Shape shape);
+    ShapeDto getShapeDto(Shape shape);
 }

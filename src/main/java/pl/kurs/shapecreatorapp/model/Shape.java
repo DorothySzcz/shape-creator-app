@@ -3,23 +3,21 @@ package pl.kurs.shapecreatorapp.model;
 import javax.persistence.Entity;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
+import javax.persistence.Table;
 import java.util.Objects;
 
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@Table(name = "shape")
 public abstract class Shape extends AuditableEntity {
 
     private String type;
-    private Double area;
-    private Double perimeter;
 
     public Shape() {
     }
 
-    public Shape(String type, Double area, Double perimeter) {
+    public Shape(String type) {
         this.type = type;
-        this.area = area;
-        this.perimeter = perimeter;
     }
 
     public String getType() {
@@ -30,34 +28,18 @@ public abstract class Shape extends AuditableEntity {
         this.type = type;
     }
 
-    public Double getArea() {
-        return area;
-    }
-
-    public void setArea(Double area) {
-        this.area = area;
-    }
-
-    public Double getPerimeter() {
-        return perimeter;
-    }
-
-    public void setPerimeter(Double perimeter) {
-        this.perimeter = perimeter;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         if (!super.equals(o)) return false;
         Shape shape = (Shape) o;
-        return Objects.equals(type, shape.type) && Objects.equals(area, shape.area) && Objects.equals(perimeter, shape.perimeter);
+        return Objects.equals(type, shape.type);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), type, area, perimeter);
+        return Objects.hash(super.hashCode(), type);
     }
 
     public double calculateArea() {
@@ -68,4 +50,8 @@ public abstract class Shape extends AuditableEntity {
         return 0;
     }
 
+    @Override
+    public String toString() {
+        return super.toString() + "type='" + type + '\'';
+    }
 }

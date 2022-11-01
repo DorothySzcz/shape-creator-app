@@ -1,6 +1,7 @@
 package pl.kurs.shapecreatorapp.repository;
 
 import org.springframework.stereotype.Repository;
+import pl.kurs.shapecreatorapp.model.SearchShapeQuery;
 import pl.kurs.shapecreatorapp.model.Shape;
 
 import javax.persistence.EntityManager;
@@ -8,7 +9,6 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,39 +22,56 @@ public class ShapeRepositoryImpl implements ShapeRepositoryCustom {
     }
 
     @Override
-    public List<Shape> findShapeByParams(String type, Double areaFrom, Double areaTo, Double perimeterFrom, Double perimeterTo,
-                                         LocalDateTime createdFrom, LocalDateTime createdTo, String createdBy, Double widthFrom,
-                                         Double widthTo, Double heightFrom, Double heightTo, Double radiusFrom, Double radiusTo) {
+    public List<Shape> findShapeByParams(SearchShapeQuery searchShapeQuery) {
 
         CriteriaBuilder cb = entityManager.getCriteriaBuilder();
         CriteriaQuery<Shape> cq = cb.createQuery(Shape.class);
 
         Root<Shape> shape = cq.from(Shape.class);
+
         List<Predicate> predicates = new ArrayList<>();
 
-        if (type != null) {
-            predicates.add(cb.equal(shape.get("type"), type));
+        if (searchShapeQuery.getType() != null)
+            predicates.add(cb.equal(shape.get("type"), searchShapeQuery.getType()));
+
+        if (searchShapeQuery.getAreaFrom() != null) {
+            predicates.add(cb.greaterThanOrEqualTo(shape.get("area"), searchShapeQuery.getAreaFrom()));
         }
-        if (areaFrom != null) {
-            predicates.add(cb.greaterThanOrEqualTo(shape.get("area"), areaFrom));
+        if (searchShapeQuery.getAreaTo() != null) {
+            predicates.add(cb.lessThanOrEqualTo(shape.get("area"), searchShapeQuery.getAreaTo()));
         }
-        if (areaTo != null) {
-            predicates.add(cb.lessThanOrEqualTo(shape.get("area"), areaTo));
+        if (searchShapeQuery.getPerimeterFrom() != null) {
+            predicates.add(cb.greaterThanOrEqualTo(shape.get("perimeter"), searchShapeQuery.getPerimeterFrom()));
         }
-        if (perimeterFrom != null) {
-            predicates.add(cb.greaterThanOrEqualTo(shape.get("perimeter"), perimeterFrom));
+        if (searchShapeQuery.getPerimeterTo() != null) {
+            predicates.add(cb.lessThanOrEqualTo(shape.get("perimeter"), searchShapeQuery.getPerimeterTo()));
         }
-        if (perimeterTo != null) {
-            predicates.add(cb.lessThanOrEqualTo(shape.get("perimeter"), perimeterTo));
+        if (searchShapeQuery.getCreatedFrom() != null) {
+            predicates.add(cb.greaterThanOrEqualTo(shape.get("createdAt"), searchShapeQuery.getCreatedFrom()));
         }
-        if (createdFrom != null) {
-            predicates.add(cb.greaterThanOrEqualTo(shape.get("createdAt"), createdFrom));
+        if (searchShapeQuery.getCreatedTo() != null) {
+            predicates.add(cb.lessThanOrEqualTo(shape.get("createdAt"), searchShapeQuery.getCreatedTo()));
         }
-        if (createdTo != null) {
-            predicates.add(cb.lessThanOrEqualTo(shape.get("createdAt"), createdTo));
+        if (searchShapeQuery.getCreatedBy() != null) {
+            predicates.add(cb.equal(shape.get("createdBy"), searchShapeQuery.getCreatedBy()));
         }
-        if (createdBy != null) {
-            predicates.add(cb.equal(shape.get("createdBy"), createdBy));
+        if (searchShapeQuery.getWidthFrom() != null) {
+            predicates.add(cb.greaterThanOrEqualTo(shape.get("width"), searchShapeQuery.getWidthFrom()));
+        }
+        if (searchShapeQuery.getWidthTo() != null) {
+            predicates.add(cb.lessThanOrEqualTo(shape.get("width"), searchShapeQuery.getWidthTo()));
+        }
+        if (searchShapeQuery.getHeightFrom() != null) {
+            predicates.add(cb.greaterThanOrEqualTo(shape.get("height"), searchShapeQuery.getHeightFrom()));
+        }
+        if (searchShapeQuery.getHeightTo() != null) {
+            predicates.add(cb.lessThanOrEqualTo(shape.get("height"), searchShapeQuery.getHeightTo()));
+        }
+        if (searchShapeQuery.getRadiusFrom() != null) {
+            predicates.add(cb.greaterThanOrEqualTo(shape.get("radius"), searchShapeQuery.getRadiusFrom()));
+        }
+        if (searchShapeQuery.getRadiusTo() != null) {
+            predicates.add(cb.lessThanOrEqualTo(shape.get("radius"), searchShapeQuery.getRadiusTo()));
         }
 
         cq.where(predicates.toArray(new Predicate[0]));

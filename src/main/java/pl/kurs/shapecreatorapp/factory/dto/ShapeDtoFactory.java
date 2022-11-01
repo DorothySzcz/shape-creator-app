@@ -18,8 +18,8 @@ public class ShapeDtoFactory {
         this.creators = creators.stream().collect(Collectors.toMap(ShapeDtoCreator::getType, Function.identity()));
     }
 
-    public ShapeDto findShapeConverterClass(Shape shape) {
-        return creators.get(shape.getType()).find(shape);
+    public ShapeDto findShapeDto(Shape shape) {
+        return creators.get(shape.getType()).getShapeDto(shape);
     }
 
 }

@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 @Value
 @ResponseStatus(HttpStatus.BAD_REQUEST)
 public class BadQuantityOfParametersException extends RuntimeException {
-
     public BadQuantityOfParametersException(String message) {
         super(message);
     }

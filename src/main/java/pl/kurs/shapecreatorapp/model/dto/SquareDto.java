@@ -1,10 +1,11 @@
 package pl.kurs.shapecreatorapp.model.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import lombok.Setter;
+import lombok.Builder;
 
 import java.time.LocalDateTime;
 
+@Builder
 public class SquareDto implements ShapeDto {
 
     private int id;

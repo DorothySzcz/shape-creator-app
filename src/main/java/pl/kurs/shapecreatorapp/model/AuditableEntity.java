@@ -7,20 +7,22 @@ import org.springframework.data.annotation.LastModifiedBy;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
+import javax.persistence.MappedSuperclass;
+import javax.persistence.Table;
 import javax.persistence.Version;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
-@Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-@EntityListeners(AuditingEntityListener.class)
+@EntityListeners({AuditingEntityListener.class})
+@MappedSuperclass
+@Table(name = "auditable_entity")
 public abstract class AuditableEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -97,5 +99,16 @@ public abstract class AuditableEntity {
     @Override
     public int hashCode() {
         return Objects.hash(id, version, createdBy, createdAt, lastModifiedAt, lastModifiedBy);
+    }
+
+    @Override
+    public String toString() {
+        return
+                "id=" + id +
+                ", version=" + version +
+                ", createdBy='" + createdBy + '\'' +
+                ", createdAt=" + createdAt +
+                ", lastModifiedAt=" + lastModifiedAt +
+                ", lastModifiedBy='" + lastModifiedBy + '\'';
     }
 }

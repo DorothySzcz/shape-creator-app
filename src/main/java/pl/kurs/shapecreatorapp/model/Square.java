@@ -1,17 +1,26 @@
 package pl.kurs.shapecreatorapp.model;
 
 import javax.persistence.Entity;
+import javax.persistence.Table;
+import javax.persistence.Transient;
 import java.util.Objects;
 
 @Entity
+@Table(name = "square")
 public class Square extends Shape {
     private double width;
+
+    @Transient
+    private double area;
+
+    @Transient
+    private double perimeter;
 
     public Square() {
     }
 
-    public Square(String type, Double area, Double perimeter, double width) {
-        super(type, area, perimeter);
+    public Square(String type, double width) {
+        super(type);
         this.width = width;
     }
 
@@ -37,14 +46,25 @@ public class Square extends Shape {
         return Objects.hash(super.hashCode(), width);
     }
 
+
     @Override
     public double calculateArea() {
-        return Math.pow(width, 2);
+        area = Math.pow(width, 2);
+        return area;
     }
 
     @Override
     public double calculatePerimeter() {
-        return 4 * width;
+        perimeter = 4 * width;
+        return perimeter;
     }
 
+    @Override
+    public String toString() {
+        return "Square{" + super.toString() +
+                "width=" + width +
+                ", area=" + area +
+                ", perimeter=" + perimeter +
+                '}';
+    }
 }

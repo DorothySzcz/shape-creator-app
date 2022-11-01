@@ -1,9 +1,11 @@
 package pl.kurs.shapecreatorapp.model;
 
 import javax.persistence.Entity;
+import javax.persistence.Table;
 import java.util.Objects;
 
 @Entity
+@Table(name = "rectangle")
 public class Rectangle extends Shape {
     private double width;
     private double height;
@@ -11,8 +13,8 @@ public class Rectangle extends Shape {
     public Rectangle() {
     }
 
-    public Rectangle(String type, Double area, Double perimeter, double width, double height) {
-        super(type, area, perimeter);
+    public Rectangle(String type, double width, double height) {
+        super(type);
         this.width = width;
         this.height = height;
     }

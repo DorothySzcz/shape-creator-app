@@ -1,9 +1,11 @@
 package pl.kurs.shapecreatorapp.service;
 
+import pl.kurs.shapecreatorapp.exception.NoPermissionException;
+import pl.kurs.shapecreatorapp.model.SearchShapeQuery;
 import pl.kurs.shapecreatorapp.model.Shape;
 import pl.kurs.shapecreatorapp.model.command.CreateShapeCommand;
+import pl.kurs.shapecreatorapp.model.command.UpdateShapeCommand;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -15,7 +17,9 @@ public interface ShapeService {
 
     Shape createShape(CreateShapeCommand command);
 
-    List<Shape> getAllShapesByParams(String type, Double areaFrom, Double areaTo, Double perimeterFrom, Double perimeterTo,
-                                     LocalDateTime createdFrom, LocalDateTime createdTo, String createdBy, Double widthFrom,
-                                     Double widthTo, Double heightFrom, Double heightTo, Double radiusFrom, Double radiusTo);
+    List<Shape> getAllShapesByParams(SearchShapeQuery searchShapeQuery);
+
+    Shape editShape(int id, UpdateShapeCommand dataToEdit) throws NoPermissionException;
+
+
 }

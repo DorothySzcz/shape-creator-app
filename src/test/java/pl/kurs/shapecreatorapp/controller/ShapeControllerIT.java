@@ -26,6 +26,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -59,17 +60,20 @@ class ShapeControllerIT {
         jsonObj.put("parameters", List.of(2.0));
 
         mockMvc.perform(MockMvcRequestBuilders.post("/api/v1/shapes")
+                .with(csrf().asHeader())
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(jsonObj.toString()))
                 .andExpect(status().isCreated());
 
-        Shape newShapeToAdd = new Square("SQUARE", 4.0, 8.0, 2.0);
+        Shape newShapeToAdd = new Square("SQUARE", 2.0);
         newShapeToAdd.setId(1);
         newShapeToAdd.setVersion(0);
         newShapeToAdd.setCreatedBy("creator");
         newShapeToAdd.setCreatedAt(LocalDateTime.of(2022, 10, 10, 10, 10, 10));
         newShapeToAdd.setLastModifiedAt(LocalDateTime.of(2022, 10, 10, 10, 10, 10));
         newShapeToAdd.setLastModifiedBy("creator");
+        newShapeToAdd.calculateArea();
+        newShapeToAdd.calculatePerimeter();
 
         mockMvc.perform(MockMvcRequestBuilders.get("/api/v1/shapes/1"))
                 .andExpect(jsonPath("$.width").value(2.0))

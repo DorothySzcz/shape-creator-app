@@ -3,11 +3,14 @@ package pl.kurs.shapecreatorapp.exception.handler;
 import lombok.Builder;
 import lombok.Value;
 import org.hibernate.exception.ConstraintViolationException;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import pl.kurs.shapecreatorapp.exception.BadQuantityOfParametersException;
+import pl.kurs.shapecreatorapp.exception.NoPermissionException;
+import pl.kurs.shapecreatorapp.exception.ShapeNotFoundException;
 import pl.kurs.shapecreatorapp.exception.constraints.ConstraintErrorHandler;
 
 import java.util.Map;
@@ -23,6 +26,16 @@ public class GlobalExceptionHandler {
     public GlobalExceptionHandler(Set<ConstraintErrorHandler> handlers) {
         this.constraintErrorMapper = handlers.stream()
                 .collect(Collectors.toMap(ConstraintErrorHandler::getConstraintName, Function.identity()));
+    }
+
+    @ExceptionHandler(NoPermissionException.class)
+    public ResponseEntity handleNoPermissionException(NoPermissionException exc) {
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(new NoPermissionExceptionDto("NO_PERMISSION_TO_RESOURCES"));
+    }
+
+    @ExceptionHandler(ShapeNotFoundException.class)
+    public ResponseEntity handleShapeNotFoundException(ShapeNotFoundException exc) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ShapeNotFoundExceptionDto("SHAPE_NOT_FOUND"));
     }
 
     @ExceptionHandler(BadQuantityOfParametersException.class)
@@ -44,6 +57,16 @@ public class GlobalExceptionHandler {
                         fe -> new ValidationErrorDto(fe.getDefaultMessage(), fe.getField())
                 ).collect(Collectors.toList())
         );
+    }
+
+    @Value
+    public static class NoPermissionExceptionDto {
+        private String code;
+    }
+
+    @Value
+    public static class ShapeNotFoundExceptionDto {
+        private String code;
     }
 
     @Value

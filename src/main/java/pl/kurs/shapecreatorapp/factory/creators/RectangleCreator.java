@@ -9,24 +9,24 @@ import java.util.List;
 
 @Service
 public class RectangleCreator implements ShapeCreator {
+
     @Override
     public String getType() {
         return "RECTANGLE";
     }
 
     @Override
-    public Shape create(List<Double> parameters) {
-
+    public Shape create(List parameters) {
         if (parameters.size() != 2) {
             throw new BadQuantityOfParametersException("BAD_QUANTITY_OF_PARAMETERS");
         }
 
         Rectangle rectangle = new Rectangle();
         rectangle.setType(getType());
-        rectangle.setWidth(parameters.get(0));
-        rectangle.setHeight(parameters.get(1));
-        rectangle.setArea(rectangle.calculateArea());
-        rectangle.setPerimeter(rectangle.calculatePerimeter());
+        rectangle.setWidth((Double) parameters.get(0));
+        rectangle.setHeight((Double) parameters.get(1));
+        rectangle.calculateArea();
+        rectangle.calculatePerimeter();
         return rectangle;
     }
 }

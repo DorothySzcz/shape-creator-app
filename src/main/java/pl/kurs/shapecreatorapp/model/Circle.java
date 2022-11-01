@@ -1,25 +1,27 @@
 package pl.kurs.shapecreatorapp.model;
 
 import javax.persistence.Entity;
+import javax.persistence.Table;
 import java.util.Objects;
 
 @Entity
+@Table(name = "circle")
 public class Circle extends Shape {
-    private double radius;
+    private Double radius;
 
     public Circle() {
     }
 
-    public Circle(String type, Double area, Double perimeter, double radius) {
-        super(type, area, perimeter);
+    public Circle(String type, double radius) {
+        super(type);
         this.radius = radius;
     }
 
-    public double getRadius() {
+    public Double getRadius() {
         return radius;
     }
 
-    public void setRadius(double radius) {
+    public void setRadius(Double radius) {
         this.radius = radius;
     }
 

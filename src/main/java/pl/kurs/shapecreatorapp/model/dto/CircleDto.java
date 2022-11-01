@@ -1,9 +1,12 @@
 package pl.kurs.shapecreatorapp.model.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import lombok.Builder;
 
 import java.time.LocalDateTime;
+import java.util.Objects;
 
+@Builder
 public class CircleDto implements ShapeDto {
 
     private int id;
@@ -115,4 +118,32 @@ public class CircleDto implements ShapeDto {
         this.perimeter = perimeter;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        CircleDto circleDto = (CircleDto) o;
+        return id == circleDto.id && Double.compare(circleDto.radius, radius) == 0 && version == circleDto.version && Double.compare(circleDto.area, area) == 0 && Double.compare(circleDto.perimeter, perimeter) == 0 && Objects.equals(type, circleDto.type) && Objects.equals(createdBy, circleDto.createdBy) && Objects.equals(createdAt, circleDto.createdAt) && Objects.equals(lastModifiedAt, circleDto.lastModifiedAt) && Objects.equals(lastModifiedBy, circleDto.lastModifiedBy);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, type, radius, version, createdBy, createdAt, lastModifiedAt, lastModifiedBy, area, perimeter);
+    }
+
+    @Override
+    public String toString() {
+        return "CircleDto{" +
+                "id=" + id +
+                ", type='" + type + '\'' +
+                ", radius=" + radius +
+                ", version=" + version +
+                ", createdBy='" + createdBy + '\'' +
+                ", createdAt=" + createdAt +
+                ", lastModifiedAt=" + lastModifiedAt +
+                ", lastModifiedBy='" + lastModifiedBy + '\'' +
+                ", area=" + area +
+                ", perimeter=" + perimeter +
+                '}';
+    }
 }
